@@ -21,7 +21,7 @@ struct Person {
 fn main() {
 
     // Variables
-    let path = Path::new("data/data.json");
+    let path = Path::new("data/data.json"); // Where you want to store the data from the cargo folder
     let display = path.display();
 
     // Open a file in write-only mode, returns `io::Result<File>`
@@ -34,17 +34,17 @@ fn main() {
 
     let mut data = Person { name: "".to_string(), discrim: "".to_string(), is_bot: "".to_string() };
 
-    // Request Info
+    // Request Info - Username
     data.name = input("What is your username? ")
         .expect("Something went wrong!"); // Catch Errors
     println!("Hello, {}!", data.name); // Output User Input
 
-    // Request Info
+    // Request Info - Discrim
     data.discrim = input("What is your discrim? ")
         .expect("Something went wrong!"); // Catch Errors
     println!("Updated to: {}#{}!", data.name, data.discrim); // Output User Input
 
-    // Request Info
+    // Request Info - Bot
     data.is_bot = input("Are you a bot? true or false: ")
         .expect("Something went wrong!"); // Catch Errors
 
@@ -54,8 +54,10 @@ fn main() {
         println!("Got it, {}#{} is not a bot!", data.name, data.discrim); // Output User Input
     }
 
+    // Esentially a formatted JSON.stringify() in JavaScript
     let res = serde_json::to_string_pretty(&data);
 
+    // Writes to file opened earlier
     match file.write_all(&res.ok().unwrap().as_bytes()) {
         Err(why) => {
             panic!("couldn't write to {}: {}", display,

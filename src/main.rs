@@ -13,8 +13,8 @@ use std::path::Path;
 #[derive(Debug)]
 struct Person {
     name: String,
-    discrim: String,
-    is_bot: String
+    discrim: i32,
+    is_bot: bool
 }
 
 
@@ -32,7 +32,7 @@ fn main() {
         Ok(file) => file,
     };
 
-    let mut data = Person { name: "".to_string(), discrim: "".to_string(), is_bot: "".to_string() };
+    let mut data = Person { name: "".to_string(), discrim: 0, is_bot: true };
 
     // Request Info - Username
     data.name = input("What is your username? ")
@@ -40,17 +40,22 @@ fn main() {
     println!("Hello, {}!", data.name); // Output User Input
 
     // Request Info - Discrim
-    data.discrim = input("What is your discrim? ")
+    let discrim = input("What is your discrim? ")
         .expect("Something went wrong!"); // Catch Errors
-    println!("Updated to: {}#{}!", data.name, data.discrim); // Output User Input
+    println!("Updated to: {}#{}!", data.name, discrim); // Output User Input
 
     // Request Info - Bot
-    data.is_bot = input("Are you a bot? true or false: ")
+    let is_bot = input("Are you a bot? true or false: ")
         .expect("Something went wrong!"); // Catch Errors
 
-    if data.is_bot == "true" {
+    // Format Non-String datatypes
+    data.discrim = discrim.parse::<i32>().unwrap();
+    data.is_bot = is_bot.parse::<bool>().unwrap();
+
+    // This will check if entered user is a bot
+    if data.is_bot { // This will run if they are
         println!("Got it, {}#{} is a bot!", data.name, data.discrim); // Output User Input
-    } else {
+    } else { // This will run if they are not
         println!("Got it, {}#{} is not a bot!", data.name, data.discrim); // Output User Input
     }
 
@@ -65,7 +70,6 @@ fn main() {
         },
         Ok(_) => println!("Successfully wrote to {}!", display),
     }
-
 
 }
 
